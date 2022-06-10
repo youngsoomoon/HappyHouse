@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper file: 실행 할 쿼리 문을 저장하는 파일. 테이블 하나당 한개씩 작성 namespace: 작업하는 테이블들을 
+	구분해주기 위한 식별자 -->
+<mapper namespace="com.ssafy.mapper.MemberMapper">
+
+	<select id="memberSelect" resultType="Member">
+		select * from member
+	</select>
+	
+	<select id="selectOneMember" parameterType="string" resultType="Member">
+		select * from member where id=#{id}
+	</select>
+
+	<select id="login" parameterType="Member" resultType="Member">
+		select * from member where id= #{id} and pwd = #{pwd}
+	</select>
+	
+	<insert id="memberRegister" parameterType="Member">
+		insert into member(id, pwd, name, birthDate, address) values(#{id}, #{pwd}, #{name}, #{birthDate}, #{address})
+	</insert>
+	
+	<update id="memberUpdate" parameterType="Member">
+		update member set address = #{address}, pwd = #{pwd} where id = #{id}
+	</update>
+	
+	<delete id="memberDelete" parameterType="string">
+		delete from notice where id = #{id};
+		delete from QnA where id = #{id};
+		delete from freeBoard where id = #{id};
+		delete from qnacomment where userId = #{id};
+		delete from member where id = #{id};
+	</delete>
+	
+	<!-- 관심지역 -->
+	<select id="interestSelectAll" parameterType="string" resultType="Interest">
+		select * from baseaddress where dongCode in (select dongcode_dongCode from interest where member_id = #{id});
+	</select>
+	
+	<insert id="interestInsert" parameterType="Interest">
+		insert into interest values (#{id}, #{dongCode});
+	</insert>
+	
+	<delete id="interestDeleteAll" parameterType="string">
+		delete from interest where member_id = #{id}
+	</delete>
+	
+	<delete id="interestDelete" parameterType="Interest">
+		delete from interest where member_id = #{id} and dongcode_dongCode = #{dongCode};
+	</delete>
+</mapper>
+
+

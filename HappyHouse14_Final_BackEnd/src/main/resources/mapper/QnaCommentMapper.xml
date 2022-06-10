@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper file: 실행 할 쿼리 문을 저장하는 파일. 테이블 하나당 한개씩 작성 namespace: 작업하는 테이블들을 
+	구분해주기 위한 식별자 -->
+<mapper namespace="com.ssafy.mapper.QnaCommentMapper">
+
+	<select id="commentList" resultType="QnaComment" parameterType="string">
+		select * from qnacomment where qnaNo = #{qnaNo}
+	</select>
+	
+	<select id="commentSelect" resultType="QnaComment" parameterType="string">
+		select * from qnacomment where qnaNo = #{qnaNo} and commentNo = ${commentNo}
+	</select>
+	
+	<insert id="commentInsert" parameterType="QnaComment">
+		insert into qnacomment(content, userId, regtime, QnANo) values (#{content}, #{id}, sysdate(), #{qnaNo})
+	</insert>
+	
+	<update id="commentUpdate" parameterType="QnaComment">
+		update qnacomment set content = #{content} where qnaNo = #{qnaNo} and commentNo = ${commentNo}
+	</update>
+	
+	<delete id="commentDelete" parameterType="string">
+		delete from qnacomment where qnaNo = #{qnaNo} and commentNo = ${commentNo}
+	</delete>
+	<delete id="commentDeleteAll" parameterType="string">
+		delete from qnacomment where qnaNo = #{qnaNo}
+	</delete>
+
+	
+</mapper>
+
+

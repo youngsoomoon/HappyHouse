@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper file: 실행 할 쿼리 문을 저장하는 파일. 테이블 하나당 한개씩 작성 namespace: 작업하는 테이블들을 
+	구분해주기 위한 식별자 -->
+<mapper namespace="com.ssafy.mapper.AptMapper">
+
+	<select id="selectAllApt" resultType="HouseInfo">
+		select * from houseinfo
+	</select>
+	<select id="selectAllAptByName" resultType="HouseInfo" parameterType="string">
+		select * from houseinfo where aptName like CONCAT('%', #{aptName}, '%')
+	</select>
+
+	
+	<select id="selectAptDetail" parameterType="string" resultType="HouseDeal">
+		select HI.aptCode, HI.aptName, HI.dongCode, HI.dongName, HI.buildYear,HI.jibun,HD.dealAmount,HD.dealYear,HD.dealMonth,HD.dealDay, Hd.area,Hd.floor,Hd.type 
+ 		from houseinfo as HI join housedeal as HD 
+    	on HI.aptCode =  HD.aptCode
+    	where HI.aptCode = ${aptCode};
+	</select>
+	
+	<select id="getSido" resultType="sidoGugunCode">
+		select left(sidoCode,2) sidoCode, sidoName
+		from sidocode
+		order by sidoCode
+	</select>
+	
+	<select id="getGugun" parameterType="string" resultType="sidoGugunCode">
+		select left(gugunCode,5) gugunCode, gugunName
+		from guguncode
+		where left(gugunCode,2) = #{sido}
+		order by gugunCode
+	</select>
+	
+	<select id="getDong" parameterType="string" resultType="HouseInfo">
+		select distinct dongName, dongCode
+		from houseinfo
+		where left(dongCode, 5) = #{gugun}
+		order by dongName
+	</select>
+	
+	<select id="selectAptDong" parameterType="string" resultType="HouseInfo">
+		select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where dongCode = #{dong} 
+		order by aptName
+	</select>
+	
+</mapper>
+
+

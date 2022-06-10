@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper file: 실행 할 쿼리 문을 저장하는 파일. 테이블 하나당 한개씩 작성 namespace: 작업하는 테이블들을 
+	구분해주기 위한 식별자 -->
+<mapper namespace="com.ssafy.mapper.FreeBoardMapper">
+
+	<select id="freeboardList" resultType="FreeBoard">
+		select * from freeboard
+	</select>
+	
+	<select id="selectFreeboard" resultType="FreeBoard" parameterType="string">
+		select * from freeboard where freeBoardNo = #{freeboardNo}
+	</select>
+	
+	<insert id="freeboardInsert" parameterType="FreeBoard">
+		insert into freeboard(id, title, content, hit, regtime) values(#{id}, #{title}, #{content}, 0, sysdate())
+	</insert>
+	
+	<update id="updateHit" parameterType="FreeBoard">
+		update freeboard
+		set hit = hit + 1
+		where freeBoardNo = #{freeboardNo}
+	</update>
+	
+	<update id="freeboardUpdate" parameterType="FreeBoard">
+		update freeboard set title = #{title}, content = #{content} where freeBoardNo = #{freeboardNo}
+	</update>
+	
+	<delete id="freeboardDelete" parameterType="string">
+		delete from freeboard where freeBoardNo = #{freeboardNo}
+	</delete>
+
+	
+</mapper>
+
+
